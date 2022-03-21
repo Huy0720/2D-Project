@@ -1,0 +1,62 @@
+.include "./stdcell.jsim"
+
+.subckt FA a b ci s g p
+*Building a full adder
+Xxor2_1 a b q xor2
+Xxor2_2 ci q s xor2
+
+*Calculate propagate(p) and generate(g) signals
+Xinv_gen a b notg nand2
+Xgen notg g inverter
+Xnor_a_b a b nor_a_b nor2
+Xpropagate nor_a_b p inverter
+.ends
+
+.subckt checkZ sum[31:0] isZero
+*Calculate the z value
+Xnor_1 sum[7:0] sum[15:8] sum[23:16] sum[31:24] out1_[7:0] nor4
+Xand_1 out1_[1:0] out1_[3:2] out1_[5:4] out1_[7:6] out2_[1:0] nand4
+Xand_2 out2_[1] out2_[0] isZero nor2
+.ends
+
+.subckt checkV a b s isOverflow
+*Calculate the v value
+Xinv_sum s notS inverter
+Xinv_XA a notA inverter
+Xinv_XB b notB inverter
+Xand3_1 a b notS output_1 and3 
+Xand3_2 notA notB s output_2 and3
+Xnot_output_1 output_1 notoutput_1 inverter
+Xnot_output_2 output_2 notoutput_2 inverter
+Xor2 notoutput_1 notoutput_2 isOverflow nand2
+.ends 
+
+.subckt PGC cin G_ih P_ih G_il P_il c_high c_low G_out P_out
+* P/G and Carry generator that is duplicated below the FA
+.connect cin c_low
+Xinv_Pih P_ih notP_ih inverter
+Xinv_Gil G_il notG_il inverter
+Xpih_and_gil notP_ih notG_il pihAndgil nor2
+
+*Calculate G
+Xinv_Pih_and_Gil pihAndgil notpihAndgil inverter
+Xinv_Gih G_ih notG_ih inverter
+XG_out notG_ih notpihAndgil G_out nand2
+
+*Calculate P
+Xinv_Pil P_il notP_il inverter
+XP_out notP_il notP_ih P_out nor2
+
+*Calculate C
+Xinv_cin cin notcin inverter
+Xnotc_and_pil P_il cin notcin_and_pil nand2
+XC_out notG_il notcin_and_pil c_high nand2
+.ends
+
+
+.subckt c16calculator c_15 p_in g_in c_16
+*to calculate the carry_out of the 16th bit (c_15) that is passed to the higher bit of the adder
+Xinv_gin g_in notg_in inverter
+Xc14_and_pin p_in c_15 notc15_and_pin nand2
+Xc15 notg_in notc15_and_pin c_16 nand2
+.ends
