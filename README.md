@@ -1,7 +1,7 @@
 # 2D Project
 This is a SUTD Computer Science Term 4 2D Project (executed in one week), comprised of these courses:
 
-* 50.001 Introduction to Information Systems & Programming (cec-verifier)
+* 50.001 Introduction to Information Systems & Programming (sat-solver)
 * 50.002 Computation Structures (optimized-adder)
 * 50.004 Introduction to Algorithms (2sat-solver)
 
