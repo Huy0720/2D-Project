@@ -3,7 +3,7 @@ This is a SUTD Computer Science Term 4 2D Project (executed in one week), compri
 
 * 50.001 Introduction to Information Systems & Programming (sat-solver)
 * 50.002 Computation Structures (optimized-adder)
-* 50.004 Introduction to Algorithms (2sat-solver)
+* 50.004 Introduction to Algorithms (Kosaraju-solver)
 
 ## Computational Equivalent Checking (CEC) Verifier
 For the CEC Verifier, we implemented a Davis–Putnam–Logemann–Loveland (DPLL) algorithm as the default algorithm. This program takes a .cnf file as the input, and verifies whether the circuit is logically possible (Satisfiable). 
